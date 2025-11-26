@@ -1,0 +1,8 @@
+#!/bin/bash
+
+DIR="/var/log"   # Change this path to your target directory
+
+echo "Checking for files larger than 100 MB in: $DIR"
+echo "--------------------------------------------"
+
+find "$DIR" -type f -size +100M -exec ls -lh {} \; | awk '{print $9, $5}'
