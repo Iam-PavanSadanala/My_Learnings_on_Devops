@@ -17,7 +17,7 @@ s3_Uri="s3://onepiece-2025/test/"
 
 echo "Copying files from $Local_Dir to $s3_Uri ..."
 
-aws s3 cp "$Local_Dir" "$s3_Uri" #--recursive
+aws s3 cp "$Local_Dir" "$s3_Uri" -recursive
 
 #aws s3 rm "$s3_Uri" --recursive
 
