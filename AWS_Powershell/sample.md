@@ -1,41 +1,29 @@
-# CloudFormation Stack and Resource Retrieval Notes
-
 ## 1. Get a List of Resources for All CloudFormation Stacks
 
 ```powershell
 $cfnlist = Get-CFNStack | % { Get-CFNStackResourceList -StackName $_.StackName }
-
-1. Get a List of Resources for All CloudFormation Stacks
-$cfnlist = Get-CFNStack | % { Get-CFNStackResourceList -StackName $_.StackName }
-
+```
 
 Explanation:
 
-Get-CFNStack: Retrieves all CloudFormation stacks in the currently configured AWS region/account. The output includes properties such as:
+## Get-CFNStack: Retrieves all CloudFormation stacks in the currently configured AWS region/account. The output includes properties such as:
 
 StackName
-
 StackId
-
 StackStatus
 
-| % { ... }: The % is an alias for ForEach-Object, which iterates over each stack object retrieved by Get-CFNStack.
+ ## | % { ... }: The % is an alias for ForEach-Object, which iterates over each stack object retrieved by Get-CFNStack.
 
 Inside the loop, the Get-CFNStackResourceList cmdlet is used to fetch resources inside each stack.
-
 Typical resource properties include:
-
 LogicalResourceId
-
 PhysicalResourceId
-
 ResourceType
-
 ResourceStatus
 
-$cfnlist: Stores the resulting list of resources. If there are multiple stacks, this will likely result in a nested array (one array per stack).
+## $cfnlist: Stores the resulting list of resources. If there are multiple stacks, this will likely result in a nested array (one array per stack).
 
-2. Filter CloudFormation Stacks by Name
+## 2. Filter CloudFormation Stacks by Name
 $t = Get-CFNStack | ? StackName -ILike '*BodyKey*' | Select-Object StackName
 
 
@@ -54,11 +42,10 @@ $t: Assigns the filtered stack names to the variable $t.
 3. Retrieve the First 5 CloudFormation Stacks
 Get-CFNStack | Select-Object -First 5
 
-```
-
-
 Explanation:
 
 Get-CFNStack: Retrieves all CloudFormation stacks in the configured region/account.
 
 | Select-Object -First 5: Limits the output to the first 5 CloudFormation stack objects.
+
+```
