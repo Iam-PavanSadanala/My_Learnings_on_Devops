@@ -1,3 +1,10 @@
+# CloudFormation Stack and Resource Retrieval Notes
+
+## 1. Get a List of Resources for All CloudFormation Stacks
+
+```powershell
+$cfnlist = Get-CFNStack | % { Get-CFNStackResourceList -StackName $_.StackName }
+
 1. Get a List of Resources for All CloudFormation Stacks
 $cfnlist = Get-CFNStack | % { Get-CFNStackResourceList -StackName $_.StackName }
 
@@ -46,6 +53,8 @@ $t: Assigns the filtered stack names to the variable $t.
 
 3. Retrieve the First 5 CloudFormation Stacks
 Get-CFNStack | Select-Object -First 5
+
+```
 
 
 Explanation:
