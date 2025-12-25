@@ -2,7 +2,6 @@
 
 ```powershell
 $cfnlist = Get-CFNStack | % { Get-CFNStackResourceList -StackName $_.StackName }
-```
 
 Explanation:
 
@@ -22,6 +21,8 @@ ResourceType
 ResourceStatus
 
 $cfnlist: Stores the resulting list of resources. If there are multiple stacks, this will likely result in a nested array (one array per stack).
+```
+-------
 
 ## 2. Filter CloudFormation Stacks by Name
 ```powershell
@@ -39,6 +40,7 @@ Example stack names that will match: prod-BodyKey-api, BODYKEY-stack, etc.
 
 $t: Assigns the filtered stack names to the variable $t.
 ```
+------
 
 ## 3. Retrieve the First 5 CloudFormation Stacks
 ```powershell
