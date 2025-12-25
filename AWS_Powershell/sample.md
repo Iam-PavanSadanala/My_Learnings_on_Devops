@@ -1,65 +1,55 @@
-```bash 
-$cfnlist = Get-CFNStack | % { Get-CFNStackResourceList -StackName $_.StackName } ```
+1. Get a List of Resources for All CloudFormation Stacks
+$cfnlist = Get-CFNStack | % { Get-CFNStackResourceList -StackName $_.StackName }
 
-1. Get-CFNStack
-Fetches all CloudFormation stacks in the currently configured AWS region/account.
-Each item in the output is a stack object with properties like:
+
+Explanation:
+
+Get-CFNStack: Retrieves all CloudFormation stacks in the currently configured AWS region/account. The output includes properties such as:
 
 StackName
-StackId
-StackStatus
-etc.
 
-2. | % { ... }
-% is an alias for ForEach-Object. It iterates over each stack object from Get-CFNStack.
-Inside the loop: Get-CFNStackResourceList -StackName $_.StackName
-For each stack, it calls Get-CFNStackResourceList to retrieve the resources inside that stack.
-Typical resource properties returned include:
+StackId
+
+StackStatus
+
+| % { ... }: The % is an alias for ForEach-Object, which iterates over each stack object retrieved by Get-CFNStack.
+
+Inside the loop, the Get-CFNStackResourceList cmdlet is used to fetch resources inside each stack.
+
+Typical resource properties include:
 
 LogicalResourceId
+
 PhysicalResourceId
+
 ResourceType
+
 ResourceStatus
 
-3. Assignment to $cfnlist
-$cfnlist becomes a collection of resource lists—one list per stack.
-In other words, you’ll likely end up with a nested array (an array of arrays) unless PowerShell auto-flattens them based on how the provider emits objects.
+$cfnlist: Stores the resulting list of resources. If there are multiple stacks, this will likely result in a nested array (one array per stack).
+
+2. Filter CloudFormation Stacks by Name
+$t = Get-CFNStack | ? StackName -ILike '*BodyKey*' | Select-Object StackName
 
 
-```bash
-$t = Get-CFNStack | ? StackName -ILike '*BodyKey*' | Select-Object StackName ```
+Explanation:
 
-Breakdown
+Get-CFNStack: Retrieves all CloudFormation stacks available in the current AWS region/account.
 
-1. Get-CFNStack
-Retrieves all CloudFormation stacks that your current AWS profile/credentials can see in the default region (or the region set via Initialize-AWSDefaultConfiguration/Set-AWSCredential).
-Output: a collection of stack objects with properties like StackName, StackId, StackStatus, etc.
+| ? StackName -ILike '*BodyKey*': The ? is an alias for Where-Object. This filters stacks where the StackName property matches the wildcard pattern '*BodyKey*'. The -ILike operator performs a case-insensitive match, meaning it will match any stack whose name contains "BodyKey", regardless of case.
 
+Example stack names that will match: prod-BodyKey-api, BODYKEY-stack, etc.
 
-2. | ? StackName -ILike '*BodyKey*'
-? is an alias for Where-Object. This filters the incoming stack objects.
+| Select-Object StackName: Selects only the StackName property from the filtered stacks, simplifying the output to show only the stack names.
 
-StackName is the property being tested.
--ILike performs a case-insensitive wildcard match.
-'*BodyKey*' means: keep stacks whose names contain the substring “BodyKey” anywhere (e.g., prod-BodyKey-api, BODYKEY-stack, etc.).
+$t: Assigns the filtered stack names to the variable $t.
 
-Equivalent expanded form:
-PowerShell| Where-Object { $_.StackName -like '*BodyKey*' }  # case-sensitive| Where-Object { $_.StackName -ilike '*BodyKey*' } # case-insensitiveShow more lines
+3. Retrieve the First 5 CloudFormation Stacks
+Get-CFNStack | Select-Object -First 5
 
 
-3. | Select-Object StackName
-Projects only the StackName property from the filtered stacks.
-Output: objects containing just the StackName property (not plain strings).
+Explanation:
 
+Get-CFNStack: Retrieves all CloudFormation stacks in the configured region/account.
 
-4. $t = ...
-Assigns the resulting list (could be 0, 1, or many items) to the variable $t.
-
------------------------
-
-If you want to get details of the first 5 objects from the output of Get-CFNStack, you can use the Select-Object cmdlet with the -First parameter.
-
-```csv
-Example:
-PowerShellGet-CFNStack | Select-Object -First 5
-```
+| Select-Object -First 5: Limits the output to the first 5 CloudFormation stack objects.
