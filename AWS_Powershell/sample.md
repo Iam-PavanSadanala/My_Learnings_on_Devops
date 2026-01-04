@@ -52,3 +52,14 @@ Get-CFNStack: Retrieves all CloudFormation stacks in the configured region/accou
 | Select-Object -First 5: Limits the output to the first 5 CloudFormation stack objects.
 
 ```
+----
+```powershell
+PS C:\Users\aiuprc5\Downloads> Get-Alias ?
+
+CommandType     Name                                               Version    Source
+-----------     ----                                               -------    ------
+Alias           % -> ForEach-Object
+Alias           ? -> Where-Object
+Alias           h -> Get-History
+Alias           r -> Invoke-History
+```
